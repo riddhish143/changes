@@ -1,0 +1,99 @@
+/* Steps component styling */
+.steps-card {
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 0.75rem 1rem;
+  margin-bottom: 0;
+}
+
+.steps-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Ant Design Steps customization */
+.ant-steps {
+  padding: 0.0rem 0;
+}
+
+.ant-steps .ant-steps-item {
+  transition: all 0.3s ease-in-out;
+  padding: 0;
+  margin: 0;
+}
+
+.ant-steps .ant-steps-item-container {
+  padding: 0.25rem 0.25rem;
+  height: 100%;
+  margin: 0;
+}
+
+.ant-steps .ant-steps-item-icon {
+  transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+  width: 32px;
+  height: 32px;
+  line-height: 32px;
+  font-size: 16px;
+}
+
+.ant-steps .ant-steps-item-content {
+  min-height: 56px;
+}
+
+.ant-steps .ant-steps-item-title {
+  transition: color 0.3s ease-in-out;
+  font-size: 14px;
+  line-height: 32px;
+  margin-top: 2px;
+}
+
+.ant-steps .ant-steps-item-description {
+  transition: color 0.3s ease-in-out;
+  font-size: 12px;
+  margin-top: 2px;
+}
+
+/* Active step styling */
+.ant-steps .ant-steps-item-active .ant-steps-item-icon {
+  transform: scale(1.1);
+  box-shadow: 0 0 10px rgba(24, 144, 255, 0.3);
+}
+
+/* Completed step styling */
+.ant-steps .ant-steps-item-finish .ant-steps-item-icon {
+  background: #52c41a;
+  border-color: #52c41a;
+}
+
+/* Step connector line animation */
+.ant-steps .ant-steps-item-tail {
+  transition: background 0.3s ease-in-out;
+  height: 1px;
+  top: 16px;
+}
+
+.ant-steps .ant-steps-item-tail::after {
+  transition: background 0.3s ease-in-out;
+  height: 1px;
+}
+
+/* Hover effects */
+.ant-steps .ant-steps-item:hover .ant-steps-item-title {
+  color: #1890ff;
+}
+
+/* Progress animation for active step */
+.ant-steps .ant-steps-item-process .ant-steps-item-icon {
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(24, 144, 255, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 4px rgba(24, 144, 255, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(24, 144, 255, 0);
+  }
+} 

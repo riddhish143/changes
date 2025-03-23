@@ -1,0 +1,139 @@
+.markdown-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  isolation: isolate;
+}
+
+.markdown-popup * {
+  overscroll-behavior: contain;
+}
+
+body.popup-open {
+  overflow: hidden;
+  padding-right: 15px; /* Prevent layout shift when scrollbar disappears */
+}
+
+.markdown-popup-content {
+  background-color: white;
+  width: 90%;
+  max-width: 1200px;
+  height: 90%;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  position: relative;
+  isolation: isolate;
+}
+
+.markdown-popup-header {
+  padding: 16px 24px;
+  border-bottom: 1px solid #e0e0e0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f4f4f4;
+}
+
+.markdown-popup-header h2 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #161616;
+}
+
+.markdown-popup-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: nowrap;
+}
+
+.markdown-popup-actions button {
+  min-width: 80px;
+  height: 32px;
+  font-size: 0.875rem;
+}
+
+.markdown-popup-editor {
+  flex: 1;
+  padding: 16px;
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.markdown-popup-editor .markdown-editor-container {
+  height: 100%;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.markdown-popup-editor .w-md-editor {
+  height: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  min-height: 0 !important;
+}
+
+.markdown-popup-editor .w-md-editor-content {
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+}
+
+.markdown-popup-editor .w-md-editor-input {
+  height: 100% !important;
+  overflow: auto !important;
+}
+
+.markdown-popup-editor .w-md-editor-preview {
+  height: 100% !important;
+  overflow: auto !important;
+}
+
+.markdown-popup-status {
+  padding: 12px 24px;
+  background-color: #f4f4f4;
+  border-top: 1px solid #e0e0e0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.status-text {
+  font-size: 0.875rem;
+  color: #525252;
+  font-weight: 500;
+}
+
+.status-indicator {
+  font-size: 0.875rem;
+  color: #0f62fe;
+  font-weight: 500;
+  padding: 4px 12px;
+  background-color: #edf5ff;
+  border: 1px solid #0f62fe;
+}
+
+.repo-info {
+  font-size: 0.75rem;
+  color: #525252;
+  font-style: italic;
+  margin-left: auto;
+  padding: 4px 12px;
+} 
