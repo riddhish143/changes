@@ -7,7 +7,7 @@ export default defineConfig({
     port: 3000,
     host: '0.0.0.0',
     strictPort: false,
-    open: true,
+    open: false,
     allowedHosts: ['changes-1.onrender.com'],
     proxy: {
       '/api': {
