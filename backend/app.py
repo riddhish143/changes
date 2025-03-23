@@ -1,6 +1,7 @@
 from flask import Flask
 from flask_cors import CORS
 from routes import api
+import os
 
 def create_app():
     """Create and configure the Flask application"""
