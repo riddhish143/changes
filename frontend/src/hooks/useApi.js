@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 import axios from 'axios';
 import { useToast } from '@chakra-ui/react';
 
-const API_BASE_URL = 'http://localhost:5000/api';
+const API_BASE_URL = 'https://changes-lwdc.onrender.com/api';
 const MAX_RETRIES = 3;
 const RETRY_DELAY = 1000; // 1 second
 
