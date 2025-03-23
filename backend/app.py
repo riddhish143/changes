@@ -6,7 +6,7 @@ import os
 def create_app():
     """Create and configure the Flask application"""
     app = Flask(__name__)
-    app.use(cors({origin: 'https://changes-five.vercel.app', // Specify your frontend domain}));
+    app.use(cors({origin: 'https://changes-five.vercel.app'));
     
     # Register blueprints
     app.register_blueprint(api, url_prefix='/api')
