@@ -1,6 +1,7 @@
 import { useCallback } from 'react';
 import axios from 'axios';
 import { useToast } from '@chakra-ui/react';
+import logger from '../utils/logger.js';
 
 const API_BASE_URL = 'https://changes-lwdc.onrender.com/api';
 const MAX_RETRIES = 3;
@@ -58,7 +59,7 @@ export const useApi = () => {
       };
     } catch (error) {
       const { errorMessage } = handleError(error, 'fetching branches');
-      console.error('Error fetching branches:', errorMessage);
+      logger.error('Error fetching branches', { error: errorMessage, repoOwner, repoName });
       return { 
         data: [], 
         error: errorMessage 

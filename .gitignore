@@ -39,6 +39,7 @@ venv.bak/
 
 # Logs and databases
 *.log
+logs/
 *.sqlite
 *.db
 

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useToast } from '@chakra-ui/react';
 import { processReleaseNotes, extractNoteCategories, groupNotesByType, generateChangelogContent } from '../utils/changelogUtils';
 import { pushContent, fetchContent } from '../utils/apiService';
+import logger from '../utils/logger.js';
 
 /**
  * Custom hook for managing changelog generation
@@ -76,7 +77,13 @@ const useChangelogGenerator = (issues, editedReleaseNotes, repoOwner, repoName, 
       setShowMarkdownPopup(true);
 
     } catch (error) {
-      console.error('Error generating changelog:', error);
+      logger.error('Error generating changelog', { 
+        error: error.message, 
+        repoOwner, 
+        repoName, 
+        selectedMilestone: selectedMilestone?.title,
+        issueCount: issues?.length 
+      });
       setChangelogError(true);
       setChangelogSuccess(false);
       onChangelogGenerated(false);
@@ -180,7 +187,12 @@ const useChangelogGenerator = (issues, editedReleaseNotes, repoOwner, repoName, 
       }
       
     } catch (error) {
-      console.error('Error saving file:', error);
+      logger.error('Error saving file', { 
+        error: error.message, 
+        content: content.substring(0, 100) + '...',
+        commitMessage,
+        isBackup 
+      });
       toast({
         title: 'Error saving file',
         description: error.message || 'Failed to save file',

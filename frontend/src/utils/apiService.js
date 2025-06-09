@@ -3,6 +3,7 @@
  */
 
 import axios from 'axios';
+import logger from './logger.js';
 
 const API_BASE_URL = 'https://changes-lwdc.onrender.com/api';
 
@@ -129,7 +130,7 @@ export const updateVersion = async (owner, repo, branch, version, commitMessage)
 
     return await response.json();
   } catch (error) {
-    console.error('Error updating version:', error);
+    logger.error('Error updating version', { error: error.message, owner, repo, branch, version });
     throw error;
   }
 };
@@ -172,7 +173,7 @@ export const createPullRequest = async (owner, repo, branch, content, version, p
 
     return await response.json();
   } catch (error) {
-    console.error('Error creating pull request:', error);
+    logger.error('Error creating pull request', { error: error.message, owner, repo, branch });
     throw error;
   }
 };
@@ -201,7 +202,7 @@ export const createGistLink = async (content) => {
 
     return await response.json();
   } catch (error) {
-    console.error('Error creating Gist:', error);
+    logger.error('Error creating Gist', { error: error.message, title, content: content.substring(0, 100) + '...' });
     throw error;
   }
 };

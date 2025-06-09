@@ -17,13 +17,13 @@ def validate_repo_params():
     # Check for empty strings after stripping
     if not repo_owner or not repo_name:
         error_msg = 'Repository owner and name cannot be empty'
-        logger.error(error_msg)
+        logger.error(f"Validation failed: {error_msg}. Received owner='{request.args.get('owner', '')}', repo='{request.args.get('repo', '')}'")
         return None, (jsonify({'error': error_msg}), http.HTTPStatus.BAD_REQUEST)
     
     # Validate characters in repo owner and name
     if not all(c.isalnum() or c in '-_.' for c in repo_owner) or not all(c.isalnum() or c in '-_.' for c in repo_name):
         error_msg = 'Repository owner and name can only contain alphanumeric characters, hyphens, underscores, and dots'
-        logger.error(error_msg)
+        logger.error(f"Validation failed: {error_msg}. Received owner='{repo_owner}', repo='{repo_name}'")
         return None, (jsonify({'error': error_msg}), http.HTTPStatus.BAD_REQUEST)
     
     if not GITHUB_TOKEN:
