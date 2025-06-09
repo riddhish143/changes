@@ -3,6 +3,7 @@ import { Link, Tag } from '@carbon/react';
 import { extractReleaseNote, extractIssueAndPRLinks } from '../utils/releaseNoteUtils';
 import { updateIssue } from '../utils/apiService';
 import { findReleaseNoteSection } from '../utils/releaseNoteUtils';
+import logger from '../utils/logger.js';
 
 /**
  * Custom hook for managing issue data
@@ -208,7 +209,11 @@ const useIssueData = (issues) => {
 
         // No toast notification for automatic saving
       } catch (error) {
-        console.error('Error auto-saving release note:', error);
+        logger.error('Error auto-saving release note', { 
+          error: error.message, 
+          issueNumber,
+          repoUrl: issue.repository_url 
+        });
         // Silent error handling for auto-save
       }
     }, 1000); // 1 second debounce

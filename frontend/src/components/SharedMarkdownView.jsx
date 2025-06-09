@@ -3,6 +3,7 @@ import MarkdownPopup from './MarkdownPopup';
 import { useQueryParams } from '../hooks/useQueryParams';
 import { pushContent, updateVersion, fetchContent, createPullRequest } from '../utils/apiService';
 import { useToast, Spinner, Center, Box, Text, Button } from '@chakra-ui/react';
+import logger from '../utils/logger.js';
 
 const SharedMarkdownView = () => {
   const [isEditorOpen, setIsEditorOpen] = useState(false);
@@ -129,7 +130,7 @@ const SharedMarkdownView = () => {
         
         // Redirect to the PR URL
         if (result.pull_request && result.pull_request.html_url) {
-          console.log(`Opening pull request URL: ${result.pull_request.html_url}`);
+          logger.info('Opening pull request URL', { url: result.pull_request.html_url });
           
           // Use a small delay to ensure the browser doesn't block the popup
           setTimeout(() => {
@@ -137,7 +138,7 @@ const SharedMarkdownView = () => {
             
             // If popup was blocked, show instructions to the user
             if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
-              console.warn('Browser may have blocked the popup. Showing manual link instruction.');
+              logger.warn('Browser may have blocked the popup. Showing manual link instruction.');
               toast({
                 title: 'Popup Blocked',
                 description: `Your browser may have blocked the PR page. Click here to open PR #${result.pull_request.number}`,
@@ -150,7 +151,7 @@ const SharedMarkdownView = () => {
             }
           }, 500);
         } else {
-          console.error('No PR URL found in response:', result);
+          logger.error('No PR URL found in response', { result });
         }
         
         // Add a button to redirect to the main app
@@ -200,7 +201,11 @@ const SharedMarkdownView = () => {
         setSharedContent('');
       }
     } catch (error) {
-      console.error('Error saving to GitHub:', error);
+      logger.error('Error saving to GitHub', { 
+        error: error.message, 
+        repoInfo,
+        contentLength: content?.length 
+      });
       toast({
         title: 'Error',
         description: error.message || 'Failed to create pull request',

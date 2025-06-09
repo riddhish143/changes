@@ -4,6 +4,7 @@ import { Button } from '@carbon/react';
 import '../styles/MarkdownPopup.css';
 import { fetchContent, updateVersion, createPullRequest, createGistLink } from '../utils/apiService';
 import { useToast } from '@chakra-ui/react';
+import logger from '../utils/logger.js';
 
 const MarkdownPopup = ({ 
   content, 
@@ -129,7 +130,7 @@ const MarkdownPopup = ({
         
         // Redirect to the PR URL
         if (result.pull_request && result.pull_request.html_url) {
-          console.log(`Opening pull request URL: ${result.pull_request.html_url}`);
+          logger.info('Opening pull request URL', { url: result.pull_request.html_url });
           
           // Use a small delay to ensure the browser doesn't block the popup
           setTimeout(() => {
@@ -137,7 +138,7 @@ const MarkdownPopup = ({
             
             // If popup was blocked, show instructions to the user
             if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
-              console.warn('Browser may have blocked the popup. Showing manual link instruction.');
+              logger.warn('Browser may have blocked the popup. Showing manual link instruction.');
               toast({
                 title: 'Popup Blocked',
                 description: `Your browser may have blocked the PR page. Click here to open PR #${result.pull_request.number}`,
@@ -150,7 +151,7 @@ const MarkdownPopup = ({
             }
           }, 500);
         } else {
-          console.error('No PR URL found in response:', result);
+          logger.error('No PR URL found in response', { result });
         }
         
         // If in shared view, don't automatically close the popup
@@ -202,7 +203,13 @@ const MarkdownPopup = ({
           onClose();
         }
       } catch (error) {
-        console.error('Error during submission:', error);
+        logger.error('Error during submission', { 
+          error: error.message, 
+          repoOwner, 
+          repoName, 
+          branch,
+          contentLength: editedContent?.length 
+        });
         toast({
           title: 'Error',
           description: error.message || 'Failed to create pull request',
@@ -265,7 +272,12 @@ const MarkdownPopup = ({
         position: 'bottom-right'
       });
     } catch (error) {
-      console.error('Error fetching changes:', error);
+      logger.error('Error fetching changes', { 
+        error: error.message, 
+        repoOwner, 
+        repoName, 
+        branch 
+      });
       toast({
         title: 'Error',
         description: error.message || 'Failed to fetch changes',
@@ -352,7 +364,10 @@ const MarkdownPopup = ({
         throw new Error('Failed to get Gist URL from server response');
       }
     } catch (error) {
-      console.error('Error creating shareable link:', error);
+      logger.error('Error creating shareable link', { 
+        error: error.message, 
+        contentLength: editedContent?.length 
+      });
       toast({
         title: 'Error',
         description: error.message || 'Failed to generate or copy shareable link',

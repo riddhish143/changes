@@ -1,6 +1,7 @@
 /**
  * Utility functions for release note extraction and processing
  */
+import logger from './logger.js';
 
 /**
  * Extract release note from issue body
@@ -123,7 +124,10 @@ export const extractReleaseNote = (body) => {
 
     return `[ADDED]\n- [General]\n     - [Other] \n        - No release note section found`;
   } catch (error) {
-    console.error('Error extracting release note:', error);
+    logger.error('Error extracting release note', { 
+      error: error.message, 
+      bodyLength: body?.length 
+    });
     return `[ADDED]\n- [General]\n     - [Other] \n        - Error extracting release note`;
   }
 };

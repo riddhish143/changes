@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { fetchGistContent } from '../utils/apiService';
+import logger from '../utils/logger.js';
 
 export const useQueryParams = (onOpenEditor, onError = null) => {
   useEffect(() => {
@@ -24,7 +25,7 @@ export const useQueryParams = (onOpenEditor, onError = null) => {
         if (shouldOpenEditor === 'true') {
           if (gistUrl) {
             // If we have a Gist URL, fetch its content using the backend endpoint
-            console.log(`Fetching content from Gist: ${gistUrl}`);
+            logger.info('Fetching content from Gist', { gistUrl });
             const gistResponse = await fetchGistContent(gistUrl);
             
             // Pass the fetched content to the onOpenEditor callback
@@ -47,7 +48,7 @@ export const useQueryParams = (onOpenEditor, onError = null) => {
           window.history.pushState({}, '', newUrl);
         }
       } catch (error) {
-        console.error('Error processing URL parameters:', error);
+        logger.error('Error processing URL parameters', { error: error.message });
         
         // If an error callback is provided, use it
         if (onError && typeof onError === 'function') {

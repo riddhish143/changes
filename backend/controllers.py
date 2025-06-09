@@ -30,27 +30,27 @@ def make_github_request(url, params=None, headers=None):
         )
         
         if response.status_code == 404:
-            logger.error(f"Resource not found: {url}")
+            logger.error(f"Resource not found: {url} - Status: {response.status_code}")
             return None, response.status_code, "Resource not found"
         elif response.status_code == 403:
-            logger.error(f"Rate limit exceeded or access denied: {response.text}")
+            logger.error(f"Rate limit exceeded or access denied for {url} - Status: {response.status_code}, Response: {response.text[:200]}")
             return None, response.status_code, "Rate limit exceeded or access denied"
         elif response.status_code != 200:
-            logger.error(f"GitHub API error: {response.text}")
+            logger.error(f"GitHub API error for {url} - Status: {response.status_code}, Response: {response.text[:200]}")
             return None, response.status_code, response.text
             
         return response.json(), http.HTTPStatus.OK, None
         
     except requests.exceptions.Timeout:
-        error_msg = f"Request timed out after {REQUEST_TIMEOUT} seconds"
+        error_msg = f"Request timed out after {REQUEST_TIMEOUT} seconds for URL: {url}"
         logger.error(error_msg)
         return None, http.HTTPStatus.REQUEST_TIMEOUT, error_msg
-    except requests.exceptions.ConnectionError:
-        error_msg = "Connection error occurred"
+    except requests.exceptions.ConnectionError as e:
+        error_msg = f"Connection error occurred for URL: {url} - {str(e)}"
         logger.error(error_msg)
         return None, http.HTTPStatus.SERVICE_UNAVAILABLE, error_msg
     except requests.exceptions.RequestException as e:
-        error_msg = f"Request failed: {str(e)}"
+        error_msg = f"Request failed for URL: {url} - {str(e)}"
         logger.error(error_msg)
         return None, http.HTTPStatus.INTERNAL_SERVER_ERROR, error_msg
     finally:
@@ -60,6 +60,7 @@ def get_all_branches(owner, repo):
     """
     Fetch all branches for a given repository with pagination
     """
+    logger.debug(f"Starting to fetch branches for {owner}/{repo}")
     all_branches = []
     page = 1
 
@@ -70,20 +71,25 @@ def get_all_branches(owner, repo):
             'page': page
         }
         
+        logger.debug(f"Fetching branches page {page} for {owner}/{repo}")
         data, status_code, error = make_github_request(url, params)
         if data is None:
+            logger.error(f"Failed to fetch branches for {owner}/{repo} on page {page}: {error}")
             return None, status_code, error
             
         if not data:
+            logger.debug(f"No more branches found for {owner}/{repo} on page {page}")
             break
             
         all_branches.extend(data)
+        logger.debug(f"Added {len(data)} branches from page {page} for {owner}/{repo}")
         
         if len(data) < PER_PAGE:
             break
             
         page += 1
     
+    logger.info(f"Successfully fetched {len(all_branches)} total branches for {owner}/{repo}")
     return all_branches, http.HTTPStatus.OK, None
 
 def get_all_milestones(owner, repo):
